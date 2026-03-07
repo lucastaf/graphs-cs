@@ -1,0 +1,14 @@
+/home/lucas/Documents/Github/garfos/bin/Debug/net10.0/garfos
+/home/lucas/Documents/Github/garfos/bin/Debug/net10.0/garfos.deps.json
+/home/lucas/Documents/Github/garfos/bin/Debug/net10.0/garfos.runtimeconfig.json
+/home/lucas/Documents/Github/garfos/bin/Debug/net10.0/garfos.dll
+/home/lucas/Documents/Github/garfos/bin/Debug/net10.0/garfos.pdb
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/garfos.GeneratedMSBuildEditorConfig.editorconfig
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/garfos.AssemblyInfoInputs.cache
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/garfos.AssemblyInfo.cs
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/garfos.csproj.CoreCompileInputs.cache
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/garfos.dll
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/refint/garfos.dll
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/garfos.pdb
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/garfos.genruntimeconfig.cache
+/home/lucas/Documents/Github/garfos/obj/Debug/net10.0/ref/garfos.dll
