@@ -1,26 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "/home/lucas/Documents/Github/garfos/garfos.csproj": {}
+    "/home/lucastaf/Documents/GitHub/graphs-cs/garfos.csproj": {}
   },
   "projects": {
-    "/home/lucas/Documents/Github/garfos/garfos.csproj": {
+    "/home/lucastaf/Documents/GitHub/graphs-cs/garfos.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/lucas/Documents/Github/garfos/garfos.csproj",
+        "projectUniqueName": "/home/lucastaf/Documents/GitHub/graphs-cs/garfos.csproj",
         "projectName": "garfos",
-        "projectPath": "/home/lucas/Documents/Github/garfos/garfos.csproj",
-        "packagesPath": "/home/lucas/.nuget/packages/",
-        "outputPath": "/home/lucas/Documents/Github/garfos/obj/",
+        "projectPath": "/home/lucastaf/Documents/GitHub/graphs-cs/garfos.csproj",
+        "packagesPath": "/home/lucastaf/.nuget/packages/",
+        "outputPath": "/home/lucastaf/Documents/GitHub/graphs-cs/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/lucas/.nuget/NuGet/NuGet.Config"
+          "/home/lucastaf/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
-          "/usr/lib/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.100"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net10.0": {
@@ -60,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.103/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/home/lucastaf/.dotnet/sdk/10.0.200/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

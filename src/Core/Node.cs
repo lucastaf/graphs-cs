@@ -1,15 +1,17 @@
+using System.Reflection;
+
 namespace garfos.Core;
 
 public class Node
 {
     public readonly int Id;
-    public HashSet<Node> ConnectedNodes;
+    public HashSet<Node> ConnectedNodes = new HashSet<Node>();
     public Node(int id){
-        this.Id = id;  
+        this.Id = id; 
     }
 
-    public void Connect(Node origin)
+    public void Connect(Node dest)
     {
-        ConnectedNodes.Add(origin);
+        ConnectedNodes.Add(dest);
     }
 }
