@@ -9,10 +9,14 @@ public class Graph
     public Graph(List<Node> nodes)
     {
         this._nodes = nodes;
-        Console.WriteLine("Hello, Grafo!");
     }
 
-    public List<Node> DepthFirstSearch(Node origin)
+    public List<Node> GetNodes()
+    {
+        return _nodes;
+    }
+
+    public List<(Node, Node?)> DepthFirstSearch(Node origin)
     {
         _navigatedNodes = new List<Node>();
         var navigationOrden = _depthFirstSearch(origin);
@@ -20,24 +24,24 @@ public class Graph
         return navigationOrden;
     }
 
-    private List<Node> _depthFirstSearch(Node origin)
+    private List<(Node, Node?)> _depthFirstSearch(Node destiny, Node? origin = null)
     {
-        var toNodes = origin.ConnectedNodes;
-        List<Node> edgeNavigatedNodes = [origin];
-        _navigatedNodes!.Add(origin);
+        var toNodes = destiny.ConnectedNodes;
+        List<(Node, Node?)> edgeNavigatedNodes = [(destiny, origin)];
+        _navigatedNodes!.Add(destiny);
         foreach (var node in toNodes)
         {
             if (_navigatedNodes.Contains(node))
                 continue;
 
-            List<Node> childNavigatedNodes = _depthFirstSearch(node);
+            var childNavigatedNodes = _depthFirstSearch(node, destiny);
             edgeNavigatedNodes.AddRange(childNavigatedNodes);
         }
 
         return edgeNavigatedNodes;
     }
 
-    public List<Node> BreadthFirstSearch(Node origin)
+    public List<(Node, Node?)> BreadthFirstSearch(Node origin)
     {
         _navigatedNodes = new List<Node>();
         var navigationOrden = _breadthFirstSearch(origin, true);
@@ -45,36 +49,50 @@ public class Graph
         return navigationOrden;
     }
 
-    private List<Node> _breadthFirstSearch(Node origin, bool isStartPoint = false)
+    private List<(Node, Node?)> _breadthFirstSearch(Node origin, bool isStartPoint = false)
     {
-        Console.WriteLine($"Origin: {origin}");
         var toNodes = origin.ConnectedNodes;
-        List<Node> edgeNavigatedNodes = new List<Node>();
+        List<(Node target, Node? origin)> edgeNavigatedNodes = new();
         if (isStartPoint)
         {
-            edgeNavigatedNodes.Add(origin);
+            edgeNavigatedNodes.Add((origin, null));
             _navigatedNodes!.Add(origin);
         }
 
         foreach (var node in toNodes)
         {
-            if (!_navigatedNodes.Contains(node))
+            if (!_navigatedNodes!.Contains(node))
             {
-                edgeNavigatedNodes.Add(node);
+                edgeNavigatedNodes.Add((node, origin));
                 _navigatedNodes.Add(node);
             }
         }
 
         foreach (var node in toNodes)
         {
-            if (!edgeNavigatedNodes.Contains(node))
+            if (edgeNavigatedNodes.All(pair => pair.target != node))
                 continue;
 
-            List<Node> childNavigatedNodes = _breadthFirstSearch(node);
+            var childNavigatedNodes = _breadthFirstSearch(node);
             edgeNavigatedNodes.AddRange(childNavigatedNodes);
         }
 
         return edgeNavigatedNodes;
+    }
+
+    public List<List<int>> GetAdjacentMatrix()
+    {
+        var rows = new List<List<int>>();
+        foreach (var rowNode in _nodes)
+        {
+            var row = new List<int>();
+            foreach (var cellNode in _nodes)
+            {
+                row.Add(rowNode.ConnectedNodes.Contains(cellNode) ? 1 : 0);
+            }
+            rows.Add(row);
+        }
+        return rows;
     }
 
     public Node GetNodeById(int id)
