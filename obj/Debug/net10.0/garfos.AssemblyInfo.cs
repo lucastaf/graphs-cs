@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("garfos")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d42f7c8cfee8512e6b8a6b5ca4bb36227f0a58b1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c65923e55120690a593c6783ee11a11d663a89fb")]
 [assembly: System.Reflection.AssemblyProductAttribute("garfos")]
 [assembly: System.Reflection.AssemblyTitleAttribute("garfos")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
