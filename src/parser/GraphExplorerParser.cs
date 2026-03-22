@@ -19,11 +19,12 @@ public class GraphExplorerParser
                 "Explorar o grafo a partir de um nó",
                 "Pesquisar se um nó existe na matriz",
                 "Exibir matriz de adjacência",
+                "Visualizar fecho transitivo",
                 "Sair" },
                 "Selecione uma opção");
             switch (selection)
             {
-                case 3:
+                case 4:
                     return;
                 case 0:
                     walkGraph();
@@ -33,6 +34,9 @@ public class GraphExplorerParser
                     break;
                 case 2:
                     printAdjacentMatrix();
+                    break;
+                case 3:
+                    transitiveClosure();
                     break;
             }
         }
@@ -102,6 +106,25 @@ public class GraphExplorerParser
         catch (Exception e)
         {
             Console.WriteLine("Nó não existente");
+        }
+        TuiTools.WaitTillEnterPressed();
+    }
+
+    public void transitiveClosure()
+    {
+        Console.WriteLine($"Digite o nó de origem da consulta.");
+        int? originId = Utils._getNextIntInput(null, "Nó inválido, tente novamente");
+        Node originNode = _graph.GetNodeById(originId!.Value);
+
+        int selection = TuiTools.MenuSelect(new List<string>
+        {
+            "Fecho transitivo direto",
+            "Fecho transitivo indireto"
+        }, "Selecione o tipo de fecho transitivo");
+        var directiveClosure = selection == 0 ? _graph.DirectTransitiveClosure(originNode) : _graph.InverteTransitiveClosure(originNode);
+        foreach (var pair in directiveClosure)
+        {
+            Console.WriteLine($"Nó {pair.Item1.Id} a distância {pair.Item2}");
         }
         TuiTools.WaitTillEnterPressed();
     }
