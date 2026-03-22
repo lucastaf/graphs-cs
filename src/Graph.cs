@@ -16,6 +16,34 @@ public class Graph
         return _nodes;
     }
 
+    public List<List<int>> GetAdjacentMatrix()
+    {
+        var rows = new List<List<int>>();
+        foreach (var rowNode in _nodes)
+        {
+            var row = new List<int>();
+            foreach (var cellNode in _nodes)
+            {
+                row.Add(rowNode.ConnectedNodes.Contains(cellNode) ? 1 : 0);
+            }
+            rows.Add(row);
+        }
+        return rows;
+    }
+
+    public Node GetNodeById(int id)
+    {
+        foreach (var node in _nodes)
+        {
+            if (node.Id == id)
+                return node;
+        }
+
+        throw new NodeNotFoundException(id);
+    }
+
+
+    #region Search
     public List<(Node, Node?)> DepthFirstSearch(Node origin)
     {
         _navigatedNodes = new HashSet<Node>();
@@ -80,33 +108,10 @@ public class Graph
         return edgeNavigatedNodes;
     }
 
-    public List<List<int>> GetAdjacentMatrix()
-    {
-        var rows = new List<List<int>>();
-        foreach (var rowNode in _nodes)
-        {
-            var row = new List<int>();
-            foreach (var cellNode in _nodes)
-            {
-                row.Add(rowNode.ConnectedNodes.Contains(cellNode) ? 1 : 0);
-            }
-            rows.Add(row);
-        }
-        return rows;
-    }
+    #endregion
 
-    public Node GetNodeById(int id)
-    {
-        foreach (var node in _nodes)
-        {
-            if (node.Id == id)
-                return node;
-        }
-
-        throw new NodeNotFoundException(id);
-    }
-
-
+    
+    #region Transitive Closure
     public List<(Node, int)> DirectTransitiveClosure(Node origin)
     {
         _navigatedNodes = new HashSet<Node>();
@@ -158,4 +163,6 @@ public class Graph
 
         return transitiveClosure;
     }
+    #endregion
 }
+
