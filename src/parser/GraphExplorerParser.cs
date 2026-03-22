@@ -15,12 +15,14 @@ public class GraphExplorerParser
     {
         while (true)
         {
-            var selection = TuiTools.MenuSelect(new List<string> {
+            var selection = TuiTools.MenuSelect(
+                [
                 "Explorar o grafo a partir de um nó",
                 "Pesquisar se um nó existe na matriz",
                 "Exibir matriz de adjacência",
                 "Visualizar fecho transitivo",
-                "Sair" },
+                "Sair" 
+                ],
                 "Selecione uma opção");
             switch (selection)
             {
@@ -44,24 +46,21 @@ public class GraphExplorerParser
 
     public void walkGraph()
     {
-        Console.WriteLine($"Digite o nó de origem da consulta.");
-        int? originId = Utils._getNextIntInput(null, "Nó inválido, tente novamente");
-
-        Node originNode = _graph.GetNodeById(originId!.Value);
-        var selection = TuiTools.MenuSelect(new List<string>
-        {
+        Node originNode = _selectNode("Selecione o nó de origem da consulta.");
+        var selection = TuiTools.MenuSelect(
+        [
             "Busca em profundidade",
             "Busca em largura"
-        }, "Selecione o modo de busca");
+        ], "Selecione o modo de busca");
         if (selection == 0)
         {
-            var order = _graph.DepthFirstSearch(originNode);
+            var order = originNode.DepthFirstSearch(new (), null);
             Utils._printNodeList(order);
         }
 
         if (selection == 1)
         {
-            var order = _graph.BreadthFirstSearch(originNode);
+            var order = originNode.BreadthFirstSearch(new (), true);
             Utils._printNodeList(order);
         }
         TuiTools.WaitTillEnterPressed();
@@ -112,20 +111,25 @@ public class GraphExplorerParser
 
     public void transitiveClosure()
     {
-        Console.WriteLine($"Digite o nó de origem da consulta.");
-        int? originId = Utils._getNextIntInput(null, "Nó inválido, tente novamente");
-        Node originNode = _graph.GetNodeById(originId!.Value);
+        Node originNode = _selectNode("Selecione o nó de origem da consulta.");
 
-        int selection = TuiTools.MenuSelect(new List<string>
-        {
+        int selection = TuiTools.MenuSelect(
+        [
             "Fecho transitivo direto",
             "Fecho transitivo indireto"
-        }, "Selecione o tipo de fecho transitivo");
-        var directiveClosure = selection == 0 ? _graph.DirectTransitiveClosure(originNode) : _graph.InverteTransitiveClosure(originNode);
+        ], "Selecione o tipo de fecho transitivo");
+        var directiveClosure = selection == 0 ? _graph.DirectTransitiveClosure(originNode) : _graph.InverseTransitiveClosure(originNode);
         foreach (var pair in directiveClosure)
         {
             Console.WriteLine($"Nó {pair.Item1.Id} a distância {pair.Item2}");
         }
         TuiTools.WaitTillEnterPressed();
+    }
+
+    private Node _selectNode(string title = "Selecione um nó")
+    {
+        string[] nodesList = _graph.GetNodes().Select(node => node.Id.ToString()).ToArray();
+        int selection = TuiTools.MenuSelect(nodesList, title);
+        return _graph.GetNodeById(int.Parse(nodesList[selection]));
     }
 }

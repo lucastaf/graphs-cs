@@ -42,111 +42,24 @@ public class Graph
         throw new NodeNotFoundException(id);
     }
 
-
-    #region Search
-    public List<(Node, Node?)> DepthFirstSearch(Node origin)
-    {
-        _navigatedNodes = new HashSet<Node>();
-        var navigationOrden = _depthFirstSearch(origin);
-        _navigatedNodes = null;
-        return navigationOrden;
-    }
-
-    private List<(Node, Node?)> _depthFirstSearch(Node destiny, Node? origin = null)
-    {
-        var toNodes = destiny.ConnectedNodes;
-        List<(Node, Node?)> edgeNavigatedNodes = [(destiny, origin)];
-        _navigatedNodes!.Add(destiny);
-        foreach (var node in toNodes)
-        {
-            if (_navigatedNodes.Contains(node))
-                continue;
-
-            var childNavigatedNodes = _depthFirstSearch(node, destiny);
-            edgeNavigatedNodes.AddRange(childNavigatedNodes);
-        }
-
-        return edgeNavigatedNodes;
-    }
-
-    public List<(Node, Node?)> BreadthFirstSearch(Node origin)
-    {
-        _navigatedNodes = new HashSet<Node>();
-        var navigationOrden = _breadthFirstSearch(origin, true);
-        _navigatedNodes = null;
-        return navigationOrden;
-    }
-
-    private List<(Node, Node?)> _breadthFirstSearch(Node origin, bool isStartPoint = false)
-    {
-        var toNodes = origin.ConnectedNodes;
-        List<(Node target, Node? origin)> edgeNavigatedNodes = new();
-        if (isStartPoint)
-        {
-            edgeNavigatedNodes.Add((origin, null));
-            _navigatedNodes!.Add(origin);
-        }
-
-        foreach (var node in toNodes)
-        {
-            if (!_navigatedNodes!.Contains(node))
-            {
-                edgeNavigatedNodes.Add((node, origin));
-                _navigatedNodes.Add(node);
-            }
-        }
-
-        foreach (var node in toNodes)
-        {
-            if (edgeNavigatedNodes.All(pair => pair.target != node))
-                continue;
-
-            var childNavigatedNodes = _breadthFirstSearch(node);
-            edgeNavigatedNodes.AddRange(childNavigatedNodes);
-        }
-
-        return edgeNavigatedNodes;
-    }
-
-    #endregion
-
     
     #region Transitive Closure
     public List<(Node, int)> DirectTransitiveClosure(Node origin)
     {
-        _navigatedNodes = new HashSet<Node>();
-        var distances = _directTransitiveClosure(origin, 0);
-        _navigatedNodes = null;
+        var distances = origin.DirectTransitiveClosure(new HashSet<Node>(), 0);
         distances.Sort((a, b) => a.Item1.Id.CompareTo(b.Item1.Id));
         return distances;
     }
 
-    private List<(Node, int)> _directTransitiveClosure(Node origin, int count)
-    {
-        var transitiveClosure = new List<(Node, int)> { (origin, count) };
-        _navigatedNodes!.Add(origin);
-
-        foreach (var neighbor in origin.ConnectedNodes)
-        {
-            if (!_navigatedNodes.Contains(neighbor))
-            {
-                var childClosure = _directTransitiveClosure(neighbor, count + 1);
-                transitiveClosure.AddRange(childClosure);
-            }
-        }
-
-        return transitiveClosure;
-    }
-
-    public List<(Node, int)> InverteTransitiveClosure(Node origin)
+    public List<(Node, int)> InverseTransitiveClosure(Node origin)
     {
         _navigatedNodes = new HashSet<Node>();
-        var distances = _inverteTransitiveClosure(origin, 0);
+        var distances = _inverseTransitiveClosure(origin, 0);
         _navigatedNodes = null;
         distances.Sort((a, b) => a.Item1.Id.CompareTo(b.Item1.Id));
         return distances;
     }
-    private List<(Node, int)> _inverteTransitiveClosure(Node origin, int count)
+    private List<(Node, int)> _inverseTransitiveClosure(Node origin, int count)
     {
         var transitiveClosure = new List<(Node, int)> { (origin, count) };
         _navigatedNodes!.Add(origin);
@@ -156,7 +69,7 @@ public class Graph
         {
             if (candidate.ConnectedNodes.Contains(origin) && !_navigatedNodes.Contains(candidate))
             {
-                var childClosure = _inverteTransitiveClosure(candidate, count + 1);
+                var childClosure = _inverseTransitiveClosure(candidate, count + 1);
                 transitiveClosure.AddRange(childClosure);
             }
         }

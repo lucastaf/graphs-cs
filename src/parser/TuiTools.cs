@@ -3,9 +3,10 @@
 public static class TuiTools
 {
 
-    public static int MenuSelect(List<string> options, string? title = null)
+    public static int MenuSelect(string[] options, string? title = null)
     {
         int selectedIndex = 0;
+        List<string> optionsList = options.ToList();
         while (true)
         {
             Console.Clear();
@@ -14,9 +15,9 @@ public static class TuiTools
                 Console.WriteLine(title);
                 Console.WriteLine();
             }
-            foreach (var option in options)
+            foreach (var option in optionsList)
             {
-                if (options.IndexOf(option) == selectedIndex)
+                if (optionsList.IndexOf(option) == selectedIndex)
                 {
                     Console.WriteLine($"> {option}");
                 }
@@ -32,11 +33,11 @@ public static class TuiTools
             }
             if (pressedKey.Key == ConsoleKey.UpArrow)
             {
-                selectedIndex = (selectedIndex - 1 + options.Count) % options.Count;
+                selectedIndex = (selectedIndex - 1 + optionsList.Count) % optionsList.Count;
             }
             else if (pressedKey.Key == ConsoleKey.DownArrow)
             {
-                selectedIndex = (selectedIndex + 1) % options.Count;
+                selectedIndex = (selectedIndex + 1) % optionsList.Count;
             }
 
         }

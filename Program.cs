@@ -3,7 +3,7 @@
 using garfos.Builder;
 using garfos.parser;
 
-var graphBuilder = new NonDirectiveGraphBuilder(new List<int> { 1, 2, 3, 4, 5 }, new List<(int, int)>
+var graphBuilder = new DirectiveGraphBuilder(new List<int> { 1, 2, 3, 4, 5 }, new List<(int, int)>
  {
      (1,2),
 

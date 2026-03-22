@@ -13,7 +13,7 @@ public class GraphCreatorParser
     {
         while (true)
         {
-            int selection = TuiTools.MenuSelect(new List<string> { "Inserir nós", "Inserir conexões", "Visualizar grafo", "Confirmar criação" }, "Selecione a ação desejada");
+            int selection = TuiTools.MenuSelect([ "Inserir nós", "Inserir conexões", "Visualizar grafo", "Confirmar criação" ], "Selecione a ação desejada");
 
             switch (selection)
             {
@@ -27,7 +27,7 @@ public class GraphCreatorParser
                     printCurrentGraph();
                     break;
                 case 3:
-                    int isDirective = TuiTools.MenuSelect(new List<string> { "Diretivo", "Não diretivo" }, "Selecione o modo de direção");
+                    int isDirective = TuiTools.MenuSelect([ "Diretivo", "Não diretivo" ], "Selecione o modo de direção");
                     if (isDirective == 0)
                     {
                         return new DirectiveGraphBuilder(nodes, edges);
@@ -56,9 +56,9 @@ public class GraphCreatorParser
     {
         while (true)
         {
-            var nodesToString = nodes.Select(n => n.ToString()).ToList();
+            var nodesToString = nodes.Select(n => n.ToString()).ToArray();
             string[] nodesWithExitOption = [.. nodesToString, "Sair"];
-            int option1Selection = TuiTools.MenuSelect(new List<string>(nodesWithExitOption), "Selecione os nós para criar a aresta de origem");
+            int option1Selection = TuiTools.MenuSelect(nodesWithExitOption, "Selecione os nós para criar a aresta de origem");
             if (option1Selection == nodes.Count)
             {
                 return;
