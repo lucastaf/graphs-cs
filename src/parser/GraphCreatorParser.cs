@@ -5,70 +5,86 @@ namespace garfos.parser;
 
 public class GraphCreatorParser
 {
+    List<int> nodes = new List<int>();
+    List<(int, int)> edges = new List<(int, int)>();
+    bool isDirective;
+
     public AbstractGraphBuilder readTerminal()
     {
-        var nodes = getNodes();
-        var edges = getEdges();
-        bool isDirective = getIsDirectiveMode();
-        if (isDirective)
+        while (true)
         {
-            return new DirectiveGraphBuilder(nodes, edges);
-        }
+            int selection = TuiTools.MenuSelect(new List<string> { "Inserir nós", "Inserir conexões", "Visualizar grafo", "Confirmar criação" }, "Selecione a ação desejada");
 
-        return new NonDirectiveGraphBuilder(nodes, edges);
+            switch (selection)
+            {
+                case 0:
+                    getNodes();
+                    break;
+                case 1:
+                    getEdges();
+                    break;
+                case 2:
+                    printCurrentGraph();
+                    break;
+                case 3:
+                    int isDirective = TuiTools.MenuSelect(new List<string> { "Diretivo", "Não diretivo" }, "Selecione o modo de direção");
+                    if (isDirective == 0)
+                    {
+                        return new DirectiveGraphBuilder(nodes, edges);
+                    }
+
+                    return new NonDirectiveGraphBuilder(nodes, edges);
+            }
+        }
     }
-    
-    private List<int> getNodes()
+
+    private void getNodes()
     {
-        List<int> nodes = new List<int>();
-        Console.WriteLine("Digite os ids dos nodes, digite exit para continuar");
+        Console.Clear();
+        Console.WriteLine("Digite os ids dos nodes, digite \"e\" para sair do modo de adição de nós");
 
         while (true)
         {
-            int? input = Utils._getNextIntInput("exit", "Input inválido... este node será ignorado");
+            int? input = Utils._getNextIntInput("e", "Input inválido... este node será ignorado");
             if (input == null)
                 break;
             nodes.Add(input.Value);
         }
-
-        return nodes;
     }
 
-    private List<(int, int)> getEdges()
+    private void getEdges()
     {
-        List<(int, int)> edges = new List<(int, int)>();
-        Console.WriteLine("Digite o nó de origem e o nó de desitno, seguindo o formato 'origem -> destino', digite 'exit' para continuar");
         while (true)
         {
-            string input = Console.ReadLine();
-            if (input == "exit")
-                break;
-            try
+            var nodesToString = nodes.Select(n => n.ToString()).ToList();
+            string[] nodesWithExitOption = [.. nodesToString, "Sair"];
+            int option1Selection = TuiTools.MenuSelect(new List<string>(nodesWithExitOption), "Selecione os nós para criar a aresta de origem");
+            if (option1Selection == nodes.Count)
             {
-                string[] parts = input.Split(" -> ");
-                int input1 = int.Parse(parts[0]);
-                int input2 =  int.Parse(parts[1]);
-                edges.Add((input1, input2));
+                return;
             }
-            catch
-            {
-                Console.WriteLine("Input inválido... tente de novo");
-            }
+            int option1 = nodes[option1Selection];
+            int option2Selection = TuiTools.MenuSelect(nodesToString, "Selecione o nó de destino");
+            int option2 = nodes[option2Selection];
+            edges.Add((option1, option2));
+            Console.WriteLine($"Aresta criada: {option1} -> {option2}");
+            TuiTools.WaitTillEnterPressed();
         }
-
-        return edges;
     }
 
-    private bool getIsDirectiveMode()
+    private void printCurrentGraph()
     {
-        Console.WriteLine("Selecione o modo de direção (d para diretivo, n para nao diretivo)");
-        while (true)
+        Console.Clear();
+        Console.WriteLine("Nós:");
+        foreach (var node in nodes)
         {
-            string input = Console.ReadLine();
-            if (input == "d")
-                return true;
-            if (input == "n")
-                return false;
+            Console.WriteLine(node);
         }
+        Console.WriteLine("Arestas:");
+        foreach (var edge in edges)
+        {
+            Console.WriteLine($"{edge.Item1} -> {edge.Item2}");
+        }
+        TuiTools.WaitTillEnterPressed();
     }
 }

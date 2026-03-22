@@ -15,23 +15,23 @@ public class GraphExplorerParser
     {
         while (true)
         {
-            Console.WriteLine("Selecione uma opção");
-            Console.WriteLine("e - Explorar o grafo a partir de um nó");
-            Console.WriteLine("s - Pesquisar se um nó existe na matriz");
-            Console.WriteLine("m - Exibir matriz de adjacência");
-            Console.WriteLine("exit - Sair");
-            string input = Console.ReadLine();
-            switch (input)
+            var selection = TuiTools.MenuSelect(new List<string> {
+                "Explorar o grafo a partir de um nó",
+                "Pesquisar se um nó existe na matriz",
+                "Exibir matriz de adjacência",
+                "Sair" },
+                "Selecione uma opção");
+            switch (selection)
             {
-                case "exit":
+                case 3:
                     return;
-                case "e":
+                case 0:
                     walkGraph();
                     break;
-                case "s":
+                case 1:
                     searchNode();
                     break;
-                case "m":
+                case 2:
                     printAdjacentMatrix();
                     break;
             }
@@ -44,19 +44,23 @@ public class GraphExplorerParser
         int? originId = Utils._getNextIntInput(null, "Nó inválido, tente novamente");
 
         Node originNode = _graph.GetNodeById(originId!.Value);
-        Console.WriteLine("Selecione o modo de busca (p para busca em profundidade, l para busca em largura)");
-        string input = Console.ReadLine();
-        if (input == "p")
+        var selection = TuiTools.MenuSelect(new List<string>
+        {
+            "Busca em profundidade",
+            "Busca em largura"
+        }, "Selecione o modo de busca");
+        if (selection == 0)
         {
             var order = _graph.DepthFirstSearch(originNode);
             Utils._printNodeList(order);
         }
 
-        if (input == "l")
+        if (selection == 1)
         {
             var order = _graph.BreadthFirstSearch(originNode);
             Utils._printNodeList(order);
         }
+        TuiTools.WaitTillEnterPressed();
     }
 
     public void printAdjacentMatrix()
@@ -83,6 +87,7 @@ public class GraphExplorerParser
             Console.Write("\n");
             index++;
         }
+        TuiTools.WaitTillEnterPressed();
     }
 
     public void searchNode()
@@ -98,5 +103,6 @@ public class GraphExplorerParser
         {
             Console.WriteLine("Nó não existente");
         }
+        TuiTools.WaitTillEnterPressed();
     }
 }
