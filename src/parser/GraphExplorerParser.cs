@@ -5,10 +5,12 @@ namespace garfos.parser;
 public class GraphExplorerParser
 {
     private Graph _graph;
+    private GraphCreatorParser _creatorParser;
 
-    public GraphExplorerParser(Graph graph)
+    public GraphExplorerParser(Graph graph, GraphCreatorParser creatorParser)
     {
         _graph = graph;
+        _creatorParser = creatorParser;
     }
 
     public void ExplorerMenu()
@@ -21,12 +23,14 @@ public class GraphExplorerParser
                 "Pesquisar se um nó existe na matriz",
                 "Exibir matriz de adjacência",
                 "Visualizar fecho transitivo",
+                "Analisar subgrafos fortemente conexos",
+                "Voltar para o menu de criação de grafo",
                 "Sair" 
                 ],
                 "Selecione uma opção");
             switch (selection)
             {
-                case 4:
+                case 6:
                     return;
                 case 0:
                     walkGraph();
@@ -39,6 +43,12 @@ public class GraphExplorerParser
                     break;
                 case 3:
                     transitiveClosure();
+                    break;
+                case 4:
+                    AnalysizeSubGraphs();
+                    break;
+                case 5:
+                    _graph = _creatorParser.readTerminal().Build();
                     break;
             }
         }
@@ -124,6 +134,22 @@ public class GraphExplorerParser
             Console.WriteLine($"Nó {pair.Item1.Id} a distância {pair.Item2}");
         }
         TuiTools.WaitTillEnterPressed();
+    }
+
+    public void AnalysizeSubGraphs()
+    {
+        var subGraphs = _graph.GetAllStronglyConnectedSubGraphs();
+            int index = 1;
+            foreach (var subGraph in subGraphs)
+            {
+                Console.WriteLine($"Subgrafo {index}:");
+                var nodes = subGraph.GetNodes();
+                Console.WriteLine($"Nós: {string.Join(", ", nodes.Select(node => node.Id))}");
+                Console.WriteLine($"Número de nós: {nodes.Count}");
+                Console.WriteLine();
+                index++;
+            }
+            TuiTools.WaitTillEnterPressed();
     }
 
     private Node _selectNode(string title = "Selecione um nó")

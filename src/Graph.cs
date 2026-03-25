@@ -42,7 +42,7 @@ public class Graph
         throw new NodeNotFoundException(id);
     }
 
-    
+
     #region Transitive Closure
     public List<(Node, int)> DirectTransitiveClosure(Node origin)
     {
@@ -77,5 +77,60 @@ public class Graph
         return transitiveClosure;
     }
     #endregion
+
+    public Graph[] GetAllStronglyConnectedSubGraphs()
+    {
+        var index = new Dictionary<Node, int>();
+        var lowlink = new Dictionary<Node, int>();
+        var onStack = new HashSet<Node>();
+        var stack = new Stack<Node>();
+        var result = new List<Graph>();
+        int currentIndex = 0;
+
+        void StrongConnect(Node v)
+        {
+            index[v] = currentIndex;
+            lowlink[v] = currentIndex;
+            currentIndex++;
+            stack.Push(v);
+            onStack.Add(v);
+
+            foreach (var w in v.ConnectedNodes)
+            {
+                if (!index.ContainsKey(w))
+                {
+                    StrongConnect(w);
+                    lowlink[v] = Math.Min(lowlink[v], lowlink[w]);
+                }
+                else if (onStack.Contains(w))
+                {
+                    lowlink[v] = Math.Min(lowlink[v], index[w]);
+                }
+            }
+
+            if (lowlink[v] == index[v])
+            {
+                var sccNodes = new List<Node>();
+                Node? w = null;
+                do
+                {
+                    w = stack.Pop();
+                    onStack.Remove(w);
+                    sccNodes.Add(w);
+                } while (w != v);
+
+                // create a Graph for this strongly connected component
+                result.Add(new Graph(sccNodes));
+            }
+        }
+
+        foreach (var node in _nodes)
+        {
+            if (!index.ContainsKey(node))
+                StrongConnect(node);
+        }
+
+        return result.ToArray();
+    }
 }
 

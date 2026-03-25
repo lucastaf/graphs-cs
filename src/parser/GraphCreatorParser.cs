@@ -13,20 +13,33 @@ public class GraphCreatorParser
     {
         while (true)
         {
-            int selection = TuiTools.MenuSelect([ "Inserir nós", "Inserir conexões", "Visualizar grafo", "Confirmar criação" ], "Selecione a ação desejada");
+            int selection = TuiTools.MenuSelect([ 
+                "Inserir nós", 
+                "Inserir conexões",
+                "Excluir nó",
+                "Excluir conexão",
+                "Visualizar grafo",
+                "Confirmar criação"
+                ], "Selecione a ação desejada");
 
             switch (selection)
             {
                 case 0:
-                    getNodes();
+                    addNodes();
                     break;
                 case 1:
-                    getEdges();
+                    addEdges();
                     break;
                 case 2:
-                    printCurrentGraph();
+                    deleteNode();
                     break;
                 case 3:
+                    deleteEdge();
+                    break;
+                case 4:
+                    printCurrentGraph();
+                    break;
+                case 5:
                     int isDirective = TuiTools.MenuSelect([ "Diretivo", "Não diretivo" ], "Selecione o modo de direção");
                     if (isDirective == 0)
                     {
@@ -38,7 +51,7 @@ public class GraphCreatorParser
         }
     }
 
-    private void getNodes()
+    private void addNodes()
     {
         Console.Clear();
         Console.WriteLine("Digite os ids dos nodes, digite \"e\" para sair do modo de adição de nós");
@@ -52,7 +65,7 @@ public class GraphCreatorParser
         }
     }
 
-    private void getEdges()
+    private void addEdges()
     {
         while (true)
         {
@@ -86,5 +99,33 @@ public class GraphCreatorParser
             Console.WriteLine($"{edge.Item1} -> {edge.Item2}");
         }
         TuiTools.WaitTillEnterPressed();
+    }
+
+
+    private void deleteNode()
+    {
+        var nodesToString = nodes.Select(n => n.ToString()).ToArray();
+        string[] nodesWithExitOption = [.. nodesToString, "Sair"];
+        int optionSelection = TuiTools.MenuSelect(nodesWithExitOption, "Selecione o nó para deletar");
+        if (optionSelection == nodes.Count)
+        {
+            return;
+        }
+        int nodeToDelete = nodes[optionSelection];
+        nodes.Remove(nodeToDelete);
+        edges.RemoveAll(edge => edge.Item1 == nodeToDelete || edge.Item2 == nodeToDelete);
+    }
+
+    private void deleteEdge()
+    {
+        var edgesToString = edges.Select(e => $"{e.Item1} -> {e.Item2}").ToArray();
+        string[] edgesWithExitOption = [.. edgesToString, "Sair"];
+        int optionSelection = TuiTools.MenuSelect(edgesWithExitOption, "Selecione a aresta para deletar");
+        if (optionSelection == edges.Count)
+        {
+            return;
+        }
+        var edgeToDelete = edges[optionSelection];
+        edges.Remove(edgeToDelete);
     }
 }
