@@ -40,7 +40,7 @@ public class GraphCreatorParser
                     printCurrentGraph();
                     break;
                 case 5:
-                    int isDirective = TuiTools.MenuSelect([ "Diretivo", "Não diretivo" ], "Selecione o modo de direção");
+                    int isDirective = TuiTools.MenuSelect([ "Dirigido", "Não dirigido" ], "Selecione o modo de direção");
                     if (isDirective == 0)
                     {
                         return new DirectiveGraphBuilder(nodes, edges);

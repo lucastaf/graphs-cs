@@ -53,11 +53,31 @@ public class Graph
 
     public List<(Node, int)> InverseTransitiveClosure(Node origin)
     {
-        _navigatedNodes = new HashSet<Node>();
-        var distances = _inverseTransitiveClosure(origin, 0);
-        _navigatedNodes = null;
-        distances.Sort((a, b) => a.Item1.Id.CompareTo(b.Item1.Id));
-        return distances;
+        var visited = new HashSet<Node>();
+        var queue = new Queue<(Node node, int dist)>();
+        var result = new List<(Node, int)>();
+
+        queue.Enqueue((origin, 0));
+        visited.Add(origin);
+
+        while (queue.Count > 0)
+        {
+            var (current, dist) = queue.Dequeue();
+            result.Add((current, dist));
+
+            // procurar predecessores (arestas invertidas)
+            foreach (var candidate in _nodes)
+            {
+                if (candidate.ConnectedNodes.Contains(current) && !visited.Contains(candidate))
+                {
+                    visited.Add(candidate);
+                    queue.Enqueue((candidate, dist + 1));
+                }
+            }
+        }
+
+        result.Sort((a, b) => a.Item1.Id.CompareTo(b.Item1.Id));
+        return result;
     }
     private List<(Node, int)> _inverseTransitiveClosure(Node origin, int count)
     {
