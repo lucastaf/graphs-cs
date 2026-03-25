@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lucas\\source\\repos\\lucastaf\\graphs-cs\\garfos.csproj",
-      "projectName": "garfos",
-      "projectPath": "C:\\Users\\Lucas\\source\\repos\\lucastaf\\graphs-cs\\garfos.csproj",
+      "projectUniqueName": "C:\\Users\\Lucas\\source\\repos\\lucastaf\\graphs-cs\\graph-cs.csproj",
+      "projectName": "graph-cs",
+      "projectPath": "C:\\Users\\Lucas\\source\\repos\\lucastaf\\graphs-cs\\graph-cs.csproj",
       "packagesPath": "C:\\Users\\Lucas\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Lucas\\source\\repos\\lucastaf\\graphs-cs\\obj\\",
       "projectStyle": "PackageReference",

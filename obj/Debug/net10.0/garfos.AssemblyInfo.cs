@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("garfos")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1cac10f736c19cc1607e5c602cbf352150ed1a53")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+149b8c16e3e29c00467f8bedf03cca102417af96")]
 [assembly: System.Reflection.AssemblyProductAttribute("garfos")]
 [assembly: System.Reflection.AssemblyTitleAttribute("garfos")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
