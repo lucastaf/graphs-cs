@@ -25,12 +25,13 @@ public class GraphExplorerParser
                 "Visualizar fecho transitivo",
                 "Analisar subgrafos fortemente conexos",
                 "Voltar para o menu de criação de grafo",
+                "Visualizar coloração do grafo",
                 "Sair" 
                 ],
                 "Selecione uma opção");
             switch (selection)
             {
-                case 6:
+                case 7:
                     return;
                 case 0:
                     walkGraph();
@@ -49,6 +50,9 @@ public class GraphExplorerParser
                     break;
                 case 5:
                     _graph = _creatorParser.readTerminal().Build();
+                    break;
+                case 6:
+                    printNodeColors();
                     break;
             }
         }
@@ -152,10 +156,22 @@ public class GraphExplorerParser
             TuiTools.WaitTillEnterPressed();
     }
 
+    private void printNodeColors()
+   {
+        _graph.ColorGraph();
+        var nodes = _graph.GetNodes();
+        foreach (var node in nodes)
+        {
+            Console.WriteLine($"Nó {node.Id} - Cor: {node.color}");
+        }
+        TuiTools.WaitTillEnterPressed();
+    }
+
     private Node _selectNode(string title = "Selecione um nó")
     {
         string[] nodesList = _graph.GetNodes().Select(node => node.Id.ToString()).ToArray();
         int selection = TuiTools.MenuSelect(nodesList, title);
         return _graph.GetNodeById(int.Parse(nodesList[selection]));
     }
+
 }

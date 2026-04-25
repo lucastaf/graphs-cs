@@ -152,5 +152,18 @@ public class Graph
 
         return result.ToArray();
     }
+
+    public void ColorGraph()
+    {
+        foreach (var node in _nodes)
+        {
+            node.color = null;
+        }
+
+        foreach (var node in _nodes)
+        {
+            node.RecursiveColoring([node]);
+        }
+    }
 }
 

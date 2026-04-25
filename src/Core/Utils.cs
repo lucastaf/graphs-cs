@@ -26,4 +26,16 @@ public static class Utils
             Console.WriteLine($"{item.origin?.Id.ToString() ?? "NULO"} -> {item.target.Id}");
         }
     }   
+
+    public static Node? FindNodeConnectedToAllNodesWithColor(List<Node> nodes)
+    {
+        var nodesConnectedToAllNodes = nodes[0].ConnectedNodes;
+        nodes.RemoveAt(0);
+        foreach (var node in nodes)
+        {
+            nodesConnectedToAllNodes = nodesConnectedToAllNodes.Intersect(node.ConnectedNodes).ToHashSet();
+        }
+        var filtredNodes = nodesConnectedToAllNodes.Where(node => node.color != null);
+        return filtredNodes.FirstOrDefault();
+    }
 }

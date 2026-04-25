@@ -5,9 +5,11 @@ namespace garfos.Core;
 public class Node
 {
     public readonly int Id;
+    public int? color = null;
     public HashSet<Node> ConnectedNodes = new HashSet<Node>();
-    public Node(int id){
-        this.Id = id; 
+    public Node(int id)
+    {
+        this.Id = id;
     }
 
     public void Connect(Node dest)
@@ -79,4 +81,52 @@ public class Node
 
         return transitiveClosure;
     }
+
+
+    //#region Graph Coloring
+    public void setMinimumColor()
+    {
+        if (ConnectedNodes.Count == 0)
+        {
+            color = 0;
+            return;
+        }
+        var neighborColors = ConnectedNodes.Where(n => n.color.HasValue).Select(n => n.color!.Value);
+        int minColor = 0;
+        while (neighborColors.Contains(minColor))
+        {
+            minColor++;
+        }
+        color = minColor;
+    }
+
+    public void RecursiveColoring(List<Node> AdjacentNodes)
+    {
+        if (color.HasValue)
+        {
+            return;
+        }
+
+        setMinimumColor();
+        var newNode = Utils.FindNodeConnectedToAllNodesWithColor(AdjacentNodes);
+        while (AdjacentNodes.Count > 0)
+        {
+            if (newNode == null) break;
+            newNode = Utils.FindNodeConnectedToAllNodesWithColor(AdjacentNodes);
+            if (newNode != null)
+            {
+                break;
+            }
+            else
+            {
+                AdjacentNodes.RemoveAt(AdjacentNodes.Count - 1);
+            }
+        }
+        
+        if(newNode != null)
+        {
+            newNode.RecursiveColoring([..AdjacentNodes, this]);
+        }
+    }
+    //#endregion
 }
