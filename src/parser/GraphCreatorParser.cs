@@ -8,6 +8,7 @@ public class GraphCreatorParser
     List<int> nodes = new List<int>();
     List<(int, int)> edges = new List<(int, int)>();
     bool isDirective;
+    private readonly GraphSaver _graphSaver = new GraphSaver();
 
     public AbstractGraphBuilder readTerminal()
     {
@@ -19,6 +20,8 @@ public class GraphCreatorParser
                 "Excluir nó",
                 "Excluir conexão",
                 "Visualizar grafo",
+                "Salvar Grafo",
+                "Carregar Grafo",
                 "Confirmar criação"
                 ], "Selecione a ação desejada");
 
@@ -40,6 +43,12 @@ public class GraphCreatorParser
                     printCurrentGraph();
                     break;
                 case 5:
+                    saveGraphToFile();
+                    break;
+                case 6:
+                    loadGraphFromFile();
+                    break;
+                case 7:
                     int isDirective = TuiTools.MenuSelect([ "Dirigido", "Não dirigido" ], "Selecione o modo de direção");
                     if (isDirective == 0)
                     {
@@ -98,6 +107,52 @@ public class GraphCreatorParser
         {
             Console.WriteLine($"{edge.Item1} -> {edge.Item2}");
         }
+        TuiTools.WaitTillEnterPressed();
+    }
+
+    private void saveGraphToFile()
+    {
+        Console.Clear();
+        Console.WriteLine("Digite o path onde deseja salvar o grafo:");
+        var path = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            Console.WriteLine("Path inválido.");
+            TuiTools.WaitTillEnterPressed();
+            return;
+        }
+
+        _graphSaver.SaveGraph(path, nodes, edges);
+        Console.WriteLine("Grafo salvo com sucesso.");
+        TuiTools.WaitTillEnterPressed();
+    }
+
+    private void loadGraphFromFile()
+    {
+        Console.Clear();
+        Console.WriteLine("Digite o path do arquivo que deseja carregar:");
+        var path = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            Console.WriteLine("Path inválido.");
+            TuiTools.WaitTillEnterPressed();
+            return;
+        }
+
+        try
+        {
+            var loadedGraph = _graphSaver.LoadGraph(path);
+            nodes.Clear();
+            nodes.AddRange(loadedGraph.Nodes);
+            edges.Clear();
+            edges.AddRange(loadedGraph.Edges);
+            Console.WriteLine("Grafo carregado com sucesso.");
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Não foi possível carregar o grafo.");
+        }
+
         TuiTools.WaitTillEnterPressed();
     }
 
